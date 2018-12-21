@@ -1,0 +1,96 @@
+[
+    {
+        "time": "2018-12-20T15:58:37.216818",
+        "sequence": "EditorTextCreated",
+        "text_widget_id": 1963643024,
+        "editor_id": 1963560240,
+        "text_widget_class": "CodeViewText",
+        "editor_class": "Editor"
+    },
+    {
+        "time": "2018-12-20T15:58:37.225066",
+        "sequence": "Open",
+        "text_widget_id": 1963643024,
+        "editor_id": 1963560240,
+        "text_widget_class": "CodeViewText",
+        "filename": "/home/pi/AIY-voice-kit-python/src/main.py",
+        "editor_class": "Editor"
+    },
+    {
+        "index2": "2.0",
+        "sequence": "TextDelete",
+        "text_widget_id": 1963643024,
+        "time": "2018-12-20T15:58:37.300839",
+        "text_widget_class": "CodeViewText",
+        "index1": "1.0"
+    },
+    {
+        "text": "#!/usr/bin/env python3\n# Copyright 2017 Google Inc.\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n\"\"\"Main recognizer loop: wait for a trigger then perform and handle\nrecognition.\"\"\"\n\nimport logging\nimport os\nimport os.path\nimport sys\nimport threading\nimport time\n\nimport configargparse\n\nimport aiy.audio\nimport aiy.i18n\nimport auth_helpers\nimport action\nimport speech\n\n# =============================================================================\n#\n# Hey, Makers!\n#\n# Are you looking for actor.add_keyword? Do you want to add a new command?\n# You need to edit src/action.py. Check out the instructions at:\n# https://aiyprojects.withgoogle.com/voice/#makers-guide-3-3--create-a-new-voice-command-or-action\n#\n# =============================================================================\n\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"[%(asctime)s] %(levelname)s:%(name)s:%(message)s\"\n)\nlogger = logging.getLogger('main')\n\nCACHE_DIR = os.getenv('XDG_CACHE_HOME') or os.path.expanduser('~/.cache')\nVR_CACHE_DIR = os.path.join(CACHE_DIR, 'voice-recognizer')\n\nCONFIG_DIR = os.getenv('XDG_CONFIG_HOME') or os.path.expanduser('~/.config')\nCONFIG_FILES = [\n    '/etc/voice-recognizer.ini',\n    os.path.join(CONFIG_DIR, 'voice-recognizer.ini')\n]\n\n# Legacy fallback: old locations of secrets/credentials.\nOLD_CLIENT_SECRETS = os.path.expanduser('~/client_secrets.json')\nOLD_SERVICE_CREDENTIALS = os.path.expanduser('~/credentials.json')\n\nASSISTANT_CREDENTIALS = (\n    os.path.join(VR_CACHE_DIR, 'assistant_credentials.json')\n)\n\n# Where the locale/language bundles are stored\nLOCALE_DIR = os.path.realpath(\n    os.path.join(os.path.abspath(os.path.dirname(__file__)), '../po'))\n\n\ndef try_to_get_credentials(client_secrets):\n    \"\"\"Try to get credentials, or print an error and quit on failure.\"\"\"\n\n    if os.path.exists(ASSISTANT_CREDENTIALS):\n        return auth_helpers.load_credentials(ASSISTANT_CREDENTIALS)\n\n    if not os.path.exists(VR_CACHE_DIR):\n        os.mkdir(VR_CACHE_DIR)\n\n    if not os.path.exists(client_secrets) and os.path.exists(OLD_CLIENT_SECRETS):\n        client_secrets = OLD_CLIENT_SECRETS\n\n    if not os.path.exists(client_secrets):\n        print('You need client secrets to use the Assistant API.')\n        print('Follow these instructions:')\n        print('    https://developers.google.com/api-client-library/python/auth/installed-app'\n              '#creatingcred')\n        print('and put the file at', client_secrets)\n        sys.exit(1)\n\n    if not os.getenv('DISPLAY') and not sys.stdout.isatty():\n        print(\"\"\"\nTo use the Assistant API, manually start the application from the dev terminal.\nSee the \"Turn on the Assistant API\" section of the Voice Recognizer\nUser's Guide for more info.\"\"\")\n        sys.exit(1)\n\n    credentials = auth_helpers.credentials_flow_interactive(client_secrets)\n    auth_helpers.save_credentials(ASSISTANT_CREDENTIALS, credentials)\n    logging.info('OAuth credentials initialized: %s', ASSISTANT_CREDENTIALS)\n    return credentials\n\n\ndef create_pid_file(file_name):\n    if not file_name:\n        # Try the default locations of the pid file, preferring /run/user as\n        # it uses tmpfs.\n        pid_dir = '/run/user/%d' % os.getuid()\n        if not os.path.isdir(pid_dir):\n            pid_dir = '/tmp'\n        file_name = os.path.join(pid_dir, 'voice-recognizer.pid')\n\n    with open(file_name, 'w') as pid_file:\n        pid_file.write(\"%d\" % os.getpid())\n\n\ndef main():\n    parser = configargparse.ArgParser(\n        default_config_files=CONFIG_FILES,\n        description=\"Act on voice commands using Google's speech recognition\")\n    parser.add_argument('-T', '--trigger', default='gpio',\n                        choices=['clap', 'gpio', 'ok-google'], help='Trigger to use')\n    parser.add_argument('--cloud-speech', action='store_true',\n                        help='Use the Cloud Speech API instead of the Assistant API')\n    parser.add_argument('-L', '--language', default='en-US',\n                        help='Language code to use for speech (default: en-US)')\n    parser.add_argument('-l', '--led-fifo', default='/tmp/status-led',\n                        help='Status led control fifo')\n    parser.add_argument('-p', '--pid-file',\n                        help='File containing our process id for monitoring')\n    parser.add_argument('--audio-logging', action='store_true',\n                        help='Log all requests and responses to WAV files in /tmp')\n    parser.add_argument('--assistant-always-responds', action='store_true',\n                        help='Play Assistant responses for local actions.'\n                        ' You should make sure that you have IFTTT applets for'\n                        ' your actions to get the correct response, and also'\n                        ' that your actions do not call say().')\n    parser.add_argument('--assistant-secrets',\n                        default=os.path.expanduser('~/assistant.json'),\n                        help='Path to client secrets for the Assistant API')\n    parser.add_argument('--cloud-speech-secrets',\n                        default=os.path.expanduser('~/cloud_speech.json'),\n                        help='Path to service account credentials for the '\n                        'Cloud Speech API')\n    parser.add_argument('--trigger-sound', default=None,\n                        help='Sound when trigger is activated (WAV format)')\n\n    args = parser.parse_args()\n\n    create_pid_file(args.pid_file)\n    aiy.i18n.set_locale_dir(LOCALE_DIR)\n    aiy.i18n.set_language_code(args.language, gettext_install=True)\n\n    player = aiy.audio.get_player()\n\n    if args.cloud_speech:\n        credentials_file = os.path.expanduser(args.cloud_speech_secrets)\n        if not os.path.exists(credentials_file) and os.path.exists(OLD_SERVICE_CREDENTIALS):\n            credentials_file = OLD_SERVICE_CREDENTIALS\n        recognizer = speech.CloudSpeechRequest(credentials_file)\n    else:\n        credentials = try_to_get_credentials(\n            os.path.expanduser(args.assistant_secrets))\n        recognizer = speech.AssistantSpeechRequest(credentials)\n\n    status_ui = StatusUi(player, args.led_fifo, args.trigger_sound)\n\n    # The ok-google trigger is handled with the Assistant Library, so we need\n    # to catch this case early.\n    if args.trigger == 'ok-google':\n        if args.cloud_speech:\n            print('trigger=ok-google only works with the Assistant, not with '\n                  'the Cloud Speech API.')\n            sys.exit(1)\n        do_assistant_library(args, credentials, player, status_ui)\n    else:\n        recorder = aiy.audio.get_recorder()\n        with recorder:\n            do_recognition(args, recorder, recognizer, player, status_ui)\n\n\ndef do_assistant_library(args, credentials, player, status_ui):\n    \"\"\"Run a recognizer using the Google Assistant Library.\n\n    The Google Assistant Library has direct access to the audio API, so this\n    Python code doesn't need to record audio.\n    \"\"\"\n\n    try:\n        from google.assistant.library import Assistant\n        from google.assistant.library.event import EventType\n    except ImportError:\n        print('''\nERROR: failed to import the Google Assistant Library. This is required for\n\"OK Google\" hotwording, but is only available for Raspberry Pi 2/3. It can be\ninstalled with:\n    env/bin/pip install google-assistant-library==0.0.2''')\n        sys.exit(1)\n\n    say = aiy.audio.say\n    actor = action.make_actor(say)\n\n    def process_event(event):\n        logging.info(event)\n\n        if event.type == EventType.ON_START_FINISHED:\n            status_ui.status('ready')\n            if sys.stdout.isatty():\n                print('Say \"OK, Google\" then speak, or press Ctrl+C to quit...')\n\n        elif event.type == EventType.ON_CONVERSATION_TURN_STARTED:\n            status_ui.status('listening')\n\n        elif event.type == EventType.ON_END_OF_UTTERANCE:\n            status_ui.status('thinking')\n\n        elif event.type == EventType.ON_RECOGNIZING_SPEECH_FINISHED and \\\n                event.args and actor.can_handle(event.args['text']):\n            if not args.assistant_always_responds:\n                assistant.stop_conversation()\n            actor.handle(event.args['text'])\n\n        elif event.type == EventType.ON_CONVERSATION_TURN_FINISHED:\n            status_ui.status('ready')\n\n        elif event.type == EventType.ON_ASSISTANT_ERROR and \\\n                event.args and event.args['is_fatal']:\n            sys.exit(1)\n\n    with Assistant(credentials) as assistant:\n        for event in assistant.start():\n            process_event(event)\n\n\ndef do_recognition(args, recorder, recognizer, player, status_ui):\n    \"\"\"Configure and run the recognizer.\"\"\"\n    say = aiy.audio.say\n    actor = action.make_actor(say)\n\n    if args.cloud_speech:\n        action.add_commands_just_for_cloud_speech_api(actor, say)\n\n    recognizer.add_phrases(actor)\n    recognizer.set_audio_logging_enabled(args.audio_logging)\n\n    if args.trigger == 'gpio':\n        import triggers.gpio\n        triggerer = triggers.gpio.GpioTrigger(channel=23)\n        msg = 'Press the button on GPIO 23'\n    elif args.trigger == 'clap':\n        import triggers.clap\n        triggerer = triggers.clap.ClapTrigger(recorder)\n        msg = 'Clap your hands'\n    else:\n        logger.error(\"Unknown trigger '%s'\", args.trigger)\n        return\n\n    mic_recognizer = SyncMicRecognizer(\n        actor, recognizer, recorder, player, say, triggerer, status_ui,\n        args.assistant_always_responds)\n\n    with mic_recognizer:\n        if sys.stdout.isatty():\n            print(msg + ' then speak, or press Ctrl+C to quit...')\n\n        # wait for KeyboardInterrupt\n        while True:\n            time.sleep(1)\n\n\nclass StatusUi(object):\n\n    \"\"\"Gives the user status feedback.\n\n    The LED and optionally a trigger sound tell the user when the box is\n    ready, listening or thinking.\n    \"\"\"\n\n    def __init__(self, player, led_fifo, trigger_sound):\n        self.player = player\n\n        if led_fifo and os.path.exists(led_fifo):\n            self.led_fifo = led_fifo\n        else:\n            if led_fifo:\n                logger.warning(\n                    'File %s specified for --led-fifo does not exist.',\n                    led_fifo)\n            self.led_fifo = None\n\n        if trigger_sound and os.path.exists(os.path.expanduser(trigger_sound)):\n            self.trigger_sound = os.path.expanduser(trigger_sound)\n        else:\n            if trigger_sound:\n                logger.warning(\n                    'File %s specified for --trigger-sound does not exist.',\n                    trigger_sound)\n            self.trigger_sound = None\n\n    def status(self, status):\n        if self.led_fifo:\n            with open(self.led_fifo, 'w') as led:\n                led.write(status + '\\n')\n        logger.info('%s...', status)\n\n        if status == 'listening' and self.trigger_sound:\n            self.player.play_wav(self.trigger_sound)\n\n\nclass SyncMicRecognizer(object):\n\n    \"\"\"Detects triggers and runs recognition in a background thread.\n\n    This is a context manager, so it will clean up the background thread if the\n    main program is interrupted.\n    \"\"\"\n\n    # pylint: disable=too-many-instance-attributes\n\n    def __init__(self, actor, recognizer, recorder, player, say, triggerer,\n                 status_ui, assistant_always_responds):\n        self.actor = actor\n        self.player = player\n        self.recognizer = recognizer\n        self.recognizer.set_endpointer_cb(self.endpointer_cb)\n        self.recorder = recorder\n        self.say = say\n        self.triggerer = triggerer\n        self.triggerer.set_callback(self.recognize)\n        self.status_ui = status_ui\n        self.assistant_always_responds = assistant_always_responds\n\n        self.running = False\n\n        self.recognizer_event = threading.Event()\n\n    def __enter__(self):\n        self.running = True\n        threading.Thread(target=self._recognize).start()\n        self.triggerer.start()\n        self.status_ui.status('ready')\n\n    def __exit__(self, *args):\n        self.running = False\n        self.recognizer_event.set()\n\n        self.recognizer.end_audio()\n\n    def recognize(self):\n        if self.recognizer_event.is_set():\n            # Duplicate trigger (eg multiple button presses)\n            return\n\n        self.status_ui.status('listening')\n        self.recognizer.reset()\n        self.recorder.add_processor(self.recognizer)\n        # Tell recognizer to run\n        self.recognizer_event.set()\n\n    def endpointer_cb(self):\n        self.recorder.remove_processor(self.recognizer)\n        self.status_ui.status('thinking')\n\n    def _recognize(self):\n        while self.running:\n            self.recognizer_event.wait()\n            if not self.running:\n                break\n\n            logger.info('recognizing...')\n            try:\n                self._handle_result(self.recognizer.do_request())\n            except speech.Error:\n                logger.exception('Unexpected error')\n                self.say(_('Unexpected error. Try again or check the logs.'))\n\n            self.recognizer_event.clear()\n            if self.recognizer.dialog_follow_on:\n                self.recognize()\n            else:\n                self.triggerer.start()\n                self.status_ui.status('ready')\n\n    def _handle_result(self, result):\n        if result.transcript and self.actor.handle(result.transcript):\n            logger.info('handled local command: %s', result.transcript)\n            if result.response_audio and self.assistant_always_responds:\n                self._play_assistant_response(result.response_audio)\n        elif result.response_audio:\n            self._play_assistant_response(result.response_audio)\n        elif result.transcript:\n            logger.warning('%r was not handled', result.transcript)\n        else:\n            logger.warning('no command recognized')\n\n    def _play_assistant_response(self, audio_bytes):\n        bytes_per_sample = speech.AUDIO_SAMPLE_SIZE\n        sample_rate_hz = speech.AUDIO_SAMPLE_RATE_HZ\n        logger.info('Playing %.4f seconds of audio...',\n                    len(audio_bytes) / (bytes_per_sample * sample_rate_hz))\n        self.player.play_bytes(audio_bytes, sample_width=bytes_per_sample,\n                               sample_rate=sample_rate_hz)\n\n\nif __name__ == '__main__':\n    main()\n",
+        "index": "1.0",
+        "sequence": "TextInsert",
+        "text_widget_id": 1963643024,
+        "time": "2018-12-20T15:58:37.350303",
+        "text_widget_class": "CodeViewText",
+        "tags": "()"
+    },
+    {
+        "text_widget_context": "shell",
+        "text": "Python 3.4.2 (/usr/bin/python3)",
+        "index": "1.0",
+        "sequence": "TextInsert",
+        "text_widget_id": 1963504720,
+        "time": "2018-12-20T15:58:39.053381",
+        "text_widget_class": "ShellText",
+        "tags": "('welcome',)"
+    },
+    {
+        "text_widget_context": "shell",
+        "text": "\n",
+        "index": "1.31",
+        "sequence": "TextInsert",
+        "text_widget_id": 1963504720,
+        "time": "2018-12-20T15:58:39.056971",
+        "text_widget_class": "ShellText",
+        "tags": "('io',)"
+    },
+    {
+        "text_widget_context": "shell",
+        "text": ">>> ",
+        "index": "2.0",
+        "sequence": "TextInsert",
+        "text_widget_id": 1963504720,
+        "time": "2018-12-20T15:58:39.058341",
+        "text_widget_class": "ShellText",
+        "tags": "('toplevel', 'prompt')"
+    },
+    {
+        "time": "2018-12-20T15:58:39.062844",
+        "widget_id": 1985603408,
+        "sequence": "<FocusIn>",
+        "widget_class": "Workbench"
+    },
+    {
+        "time": "2018-12-20T15:58:43.271202",
+        "widget_id": 1943810864,
+        "sequence": "<Button-1>",
+        "widget_class": "Scrollbar"
+    },
+    {
+        "time": "2018-12-20T15:58:48.745979",
+        "widget_id": 1985603408,
+        "sequence": "<FocusOut>",
+        "widget_class": "Workbench"
+    },
+    {
+        "time": "2018-12-20T15:58:49.381862",
+        "widget_id": 1985603408,
+        "sequence": "<FocusIn>",
+        "widget_class": "Workbench"
+    },
+    {
+        "time": "2018-12-20T15:58:59.250156",
+        "widget_id": 1943810864,
+        "sequence": "<Button-1>",
+        "widget_class": "Scrollbar"
+    }
+]

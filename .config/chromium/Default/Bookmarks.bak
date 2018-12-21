@@ -1,0 +1,45 @@
+{
+   "checksum": "00b016467c6bb46d1c06f0359570940b",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13135176486631184",
+            "id": "2",
+            "meta_info": {
+               "last_visited_desktop": "13159846668902282"
+            },
+            "name": "Google API Console",
+            "type": "url",
+            "url": "https://console.developers.google.com/"
+         }, {
+            "date_added": "13135176486631184",
+            "id": "3",
+            "name": "AIY Projects/Voice",
+            "type": "url",
+            "url": "https://aiyprojects.withgoogle.com/voice/"
+         } ],
+         "date_added": "13135176330453515",
+         "date_modified": "13135176486631184",
+         "id": "1",
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13135176330453536",
+         "date_modified": "0",
+         "id": "4",
+         "name": "Other bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13135176330453541",
+         "date_modified": "0",
+         "id": "5",
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

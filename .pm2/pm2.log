@@ -1,0 +1,181 @@
+2017-10-08 14:18:40: ===============================================================================
+2017-10-08 14:18:40: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 14:18:40: Time                 : Sun Oct 08 2017 14:18:40 GMT+0100 (BST)
+2017-10-08 14:18:40: PM2 version          : 2.7.1
+2017-10-08 14:18:40: Node.js version      : 6.11.4
+2017-10-08 14:18:40: Current arch         : arm
+2017-10-08 14:18:40: PM2 home             : /home/pi/.pm2
+2017-10-08 14:18:40: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 14:18:40: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 14:18:40: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 14:18:40: Application log path : /home/pi/.pm2/logs
+2017-10-08 14:18:40: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 14:18:40: Concurrent actions   : 2
+2017-10-08 14:18:40: SIGTERM timeout      : 1600
+2017-10-08 14:18:40: ===============================================================================
+2017-10-08 14:18:40: [Watch] Start watching MagicMirror
+2017-10-08 14:18:40: Starting execution sequence in -fork mode- for app name:MagicMirror id:0
+2017-10-08 14:18:41: App name:MagicMirror id:0 online
+2017-10-08 14:32:17: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 14:32:17: Deleting process 0
+2017-10-08 14:32:17: Stopping app:MagicMirror id:0
+2017-10-08 14:32:17: App [MagicMirror] with id [0] and pid [2938], exited with code [0] via signal [SIGTERM]
+2017-10-08 14:32:18: pid=2938 msg=process killed
+2017-10-08 14:32:18: [PM2] Exited peacefully
+2017-10-08 15:16:18: ===============================================================================
+2017-10-08 15:16:18: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 15:16:18: Time                 : Sun Oct 08 2017 15:16:18 GMT+0100 (BST)
+2017-10-08 15:16:18: PM2 version          : 2.7.1
+2017-10-08 15:16:18: Node.js version      : 6.11.4
+2017-10-08 15:16:18: Current arch         : arm
+2017-10-08 15:16:18: PM2 home             : /home/pi/.pm2
+2017-10-08 15:16:18: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 15:16:18: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 15:16:18: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 15:16:18: Application log path : /home/pi/.pm2/logs
+2017-10-08 15:16:18: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 15:16:18: Concurrent actions   : 2
+2017-10-08 15:16:18: SIGTERM timeout      : 1600
+2017-10-08 15:16:18: ===============================================================================
+2017-10-08 15:16:19: Starting execution sequence in -fork mode- for app name:MagicMirror id:0
+2017-10-08 15:16:19: App name:MagicMirror id:0 online
+2017-10-08 15:17:14: Stopping app:MagicMirror id:0
+2017-10-08 15:17:15: App [MagicMirror] with id [0] and pid [2078], exited with code [0] via signal [SIGINT]
+2017-10-08 15:17:15: pid=2078 msg=process killed
+2017-10-08 15:17:15: Starting execution sequence in -fork mode- for app name:MagicMirror id:0
+2017-10-08 15:17:15: App name:MagicMirror id:0 online
+2017-10-08 15:25:58: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 15:25:58: Deleting process 0
+2017-10-08 15:25:58: Stopping app:MagicMirror id:0
+2017-10-08 15:25:59: App [MagicMirror] with id [0] and pid [2213], exited with code [0] via signal [SIGTERM]
+2017-10-08 15:25:59: pid=2213 msg=process killed
+2017-10-08 15:25:59: [PM2] Exited peacefully
+2017-10-08 15:59:21: ===============================================================================
+2017-10-08 15:59:21: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 15:59:21: Time                 : Sun Oct 08 2017 15:59:21 GMT+0100 (BST)
+2017-10-08 15:59:21: PM2 version          : 2.7.1
+2017-10-08 15:59:21: Node.js version      : 6.11.4
+2017-10-08 15:59:21: Current arch         : arm
+2017-10-08 15:59:21: PM2 home             : /home/pi/.pm2
+2017-10-08 15:59:21: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 15:59:21: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 15:59:21: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 15:59:21: Application log path : /home/pi/.pm2/logs
+2017-10-08 15:59:21: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 15:59:21: Concurrent actions   : 2
+2017-10-08 15:59:21: SIGTERM timeout      : 1600
+2017-10-08 15:59:21: ===============================================================================
+2017-10-08 17:26:52: ===============================================================================
+2017-10-08 17:26:52: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 17:26:52: Time                 : Sun Oct 08 2017 17:26:52 GMT+0100 (BST)
+2017-10-08 17:26:52: PM2 version          : 2.7.1
+2017-10-08 17:26:52: Node.js version      : 6.11.4
+2017-10-08 17:26:52: Current arch         : arm
+2017-10-08 17:26:52: PM2 home             : /home/pi/.pm2
+2017-10-08 17:26:52: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 17:26:52: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 17:26:52: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 17:26:52: Application log path : /home/pi/.pm2/logs
+2017-10-08 17:26:52: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 17:26:52: Concurrent actions   : 2
+2017-10-08 17:26:52: SIGTERM timeout      : 1600
+2017-10-08 17:26:52: ===============================================================================
+2017-10-08 17:27:35: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 17:27:35: [PM2] Exited peacefully
+2017-10-08 17:54:43: ===============================================================================
+2017-10-08 17:54:43: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 17:54:43: Time                 : Sun Oct 08 2017 17:54:43 GMT+0100 (BST)
+2017-10-08 17:54:43: PM2 version          : 2.7.1
+2017-10-08 17:54:43: Node.js version      : 6.11.4
+2017-10-08 17:54:43: Current arch         : arm
+2017-10-08 17:54:43: PM2 home             : /home/pi/.pm2
+2017-10-08 17:54:43: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 17:54:43: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 17:54:43: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 17:54:43: Application log path : /home/pi/.pm2/logs
+2017-10-08 17:54:43: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 17:54:43: Concurrent actions   : 2
+2017-10-08 17:54:43: SIGTERM timeout      : 1600
+2017-10-08 17:54:43: ===============================================================================
+2017-10-08 17:06:20: Starting execution sequence in -fork mode- for app name:MagicMirror id:0
+2017-10-08 17:06:21: App name:MagicMirror id:0 online
+2017-10-08 17:19:49: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 17:19:49: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 17:19:49: Deleting process 0
+2017-10-08 17:19:49: Stopping app:MagicMirror id:0
+2017-10-08 17:19:49: [PM2] Exited peacefully
+2017-10-08 17:19:49: App [MagicMirror] with id [0] and pid [2086], exited with code [0] via signal [SIGTERM]
+2017-10-08 17:19:50: pid=2086 msg=process killed
+2017-10-08 17:19:50: [PM2] Exited peacefully
+2017-10-08 18:23:52: ===============================================================================
+2017-10-08 18:23:52: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 18:23:52: Time                 : Sun Oct 08 2017 18:23:52 GMT+0100 (BST)
+2017-10-08 18:23:52: PM2 version          : 2.7.1
+2017-10-08 18:23:52: Node.js version      : 6.11.4
+2017-10-08 18:23:52: Current arch         : arm
+2017-10-08 18:23:52: PM2 home             : /home/pi/.pm2
+2017-10-08 18:23:52: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 18:23:52: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 18:23:52: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 18:23:52: Application log path : /home/pi/.pm2/logs
+2017-10-08 18:23:52: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 18:23:52: Concurrent actions   : 2
+2017-10-08 18:23:52: SIGTERM timeout      : 1600
+2017-10-08 18:23:52: ===============================================================================
+2017-10-08 18:23:52: Starting execution sequence in -fork mode- for app name:mm id:0
+2017-10-08 18:23:52: App name:mm id:0 online
+2017-10-08 18:25:22: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 18:25:22: Deleting process 0
+2017-10-08 18:25:22: Stopping app:mm id:0
+2017-10-08 18:25:22: App [mm] with id [0] and pid [3935], exited with code [0] via signal [SIGTERM]
+2017-10-08 18:25:22: pid=3935 msg=process killed
+2017-10-08 18:25:22: [PM2] Exited peacefully
+2017-10-08 23:31:31: ===============================================================================
+2017-10-08 23:31:31: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-08 23:31:31: Time                 : Sun Oct 08 2017 23:31:31 GMT+0100 (BST)
+2017-10-08 23:31:31: PM2 version          : 2.7.1
+2017-10-08 23:31:31: Node.js version      : 6.11.4
+2017-10-08 23:31:31: Current arch         : arm
+2017-10-08 23:31:31: PM2 home             : /home/pi/.pm2
+2017-10-08 23:31:31: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-08 23:31:31: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-08 23:31:31: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-08 23:31:31: Application log path : /home/pi/.pm2/logs
+2017-10-08 23:31:31: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-08 23:31:31: Concurrent actions   : 2
+2017-10-08 23:31:31: SIGTERM timeout      : 1600
+2017-10-08 23:31:31: ===============================================================================
+2017-10-08 23:31:40: pm2 has been killed by signal, dumping process list before exit...
+2017-10-08 23:31:41: [PM2] Exited peacefully
+2017-10-09 00:15:59: ===============================================================================
+2017-10-09 00:15:59: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-09 00:15:59: Time                 : Mon Oct 09 2017 00:15:59 GMT+0100 (BST)
+2017-10-09 00:15:59: PM2 version          : 2.7.1
+2017-10-09 00:15:59: Node.js version      : 6.11.4
+2017-10-09 00:15:59: Current arch         : arm
+2017-10-09 00:15:59: PM2 home             : /home/pi/.pm2
+2017-10-09 00:15:59: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-09 00:15:59: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-09 00:15:59: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-09 00:15:59: Application log path : /home/pi/.pm2/logs
+2017-10-09 00:15:59: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-09 00:15:59: Concurrent actions   : 2
+2017-10-09 00:15:59: SIGTERM timeout      : 1600
+2017-10-09 00:15:59: ===============================================================================
+2017-10-09 00:27:05: pm2 has been killed by signal, dumping process list before exit...
+2017-10-09 00:27:05: [PM2] Exited peacefully
+2017-10-09 00:30:20: ===============================================================================
+2017-10-09 00:30:20: --- New PM2 Daemon started ----------------------------------------------------
+2017-10-09 00:30:20: Time                 : Mon Oct 09 2017 00:30:20 GMT+0100 (BST)
+2017-10-09 00:30:20: PM2 version          : 2.7.1
+2017-10-09 00:30:20: Node.js version      : 6.11.4
+2017-10-09 00:30:20: Current arch         : arm
+2017-10-09 00:30:20: PM2 home             : /home/pi/.pm2
+2017-10-09 00:30:20: PM2 PID file         : /home/pi/.pm2/pm2.pid
+2017-10-09 00:30:20: RPC socket file      : /home/pi/.pm2/rpc.sock
+2017-10-09 00:30:20: BUS socket file      : /home/pi/.pm2/pub.sock
+2017-10-09 00:30:20: Application log path : /home/pi/.pm2/logs
+2017-10-09 00:30:20: Process dump file    : /home/pi/.pm2/dump.pm2
+2017-10-09 00:30:20: Concurrent actions   : 2
+2017-10-09 00:30:20: SIGTERM timeout      : 1600
+2017-10-09 00:30:20: ===============================================================================

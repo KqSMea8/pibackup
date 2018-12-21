@@ -1,0 +1,40 @@
+Error: ENOENT: no such file or directory, open '/home/pi/MagicMirror/index.html'
+    at Object.fs.openSync (fs.js:584:18)
+    at Object.module.(anonymous function) [as openSync] (ELECTRON_ASAR.js:173:20)
+    at Object.fs.readFileSync (fs.js:491:33)
+    at Object.fs.readFileSync (ELECTRON_ASAR.js:505:29)
+    at /home/pi/MagicMirror/js/server.js:61:17
+    at Layer.handle [as handle_request] (/home/pi/MagicMirror/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/pi/MagicMirror/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/pi/MagicMirror/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/home/pi/MagicMirror/node_modules/express/lib/router/layer.js:95:5)
+    at /home/pi/MagicMirror/node_modules/express/lib/router/index.js:281:22
+[2983:1008/143217.683354:FATAL:bus.cc(1197)] D-Bus connection was disconnected. Aborting.
+#0 0x00000139f0c0 <unknown>
+#1 0x0000013ae0be <unknown>
+#2 0x0000009d3172 <unknown>
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
+fatal: Not a git repository (or any of the parent directories): .git
+
